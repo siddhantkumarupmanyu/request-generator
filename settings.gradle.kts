@@ -8,4 +8,5 @@
  */
 
 rootProject.name = "quickstart"
+include("processor")
 include("app")
