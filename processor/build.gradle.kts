@@ -15,3 +15,5 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
 }
+
+// https://github.com/google/ksp/issues/1040

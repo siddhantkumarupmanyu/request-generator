@@ -1,4 +1,5 @@
 plugins {
+    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
     kotlin("jvm")
     application
 }
@@ -10,7 +11,10 @@ repositories {
 dependencies {
     implementation(platform(kotlin("bom")))
     implementation(kotlin("stdlib-jdk8"))
-    
+
+    implementation(project(":processor"))
+    ksp(project(":processor"))
+
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
 }
