@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm")
     application
     id("com.google.devtools.ksp") version "1.7.10-1.0.6"
+    idea
 }
 
 repositories {
@@ -21,4 +22,21 @@ dependencies {
 
 application {
     mainClass.set("com.example.AppKt")
+}
+
+// on why hardcoding
+// https://github.com/gradle/gradle/issues/9331#issuecomment-1242992483
+// plugin authors evaluating task lazily, and they have to cause source data is available lazily to them,
+// it's how gradle works...
+
+// anyway can use a variable. and configure ksp and here with that
+
+idea {
+    module {
+        val sourceDestination = file("build/generated/ksp/main/kotlin")
+        val testDestination = file("build/generated/ksp/test/kotlin")
+        sourceDirs = sourceDirs + sourceDestination
+        testSourceDirs = sourceDirs + testDestination
+        generatedSourceDirs = generatedSourceDirs + sourceDestination + testDestination
+    }
 }
