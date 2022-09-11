@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm")
     application
@@ -39,4 +41,17 @@ idea {
         testSourceDirs = sourceDirs + testDestination
         generatedSourceDirs = generatedSourceDirs + sourceDestination + testDestination
     }
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions {
+        apiVersion = "1.7"
+        languageVersion = "1.7"
+        jvmTarget = "17"
+    }
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
 }
