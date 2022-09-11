@@ -6,12 +6,8 @@ class E2ETest {
 
     @Test
     fun generateRequestObject() {
-        // test
-
-        // todo: test for the package name
-
-        val request = SomeValueObjectRequest("test")
-        // fail("should generate SomeValueObjectRequest")
+        val request = NeededRequest("test")
+        // val request2 = AnotherNeededRequest("test")
     }
 
 }

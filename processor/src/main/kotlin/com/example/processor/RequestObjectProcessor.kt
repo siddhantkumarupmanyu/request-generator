@@ -24,7 +24,7 @@ class RequestObjectProcessor(
         val writer = OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)
 
         writer.write("package com.example \n")
-        writer.write("data class SomeValueObjectRequest(val test1: String) \n")
+        writer.write("data class NeededRequest(val test1: String) \n")
 
         writer.close()
 
