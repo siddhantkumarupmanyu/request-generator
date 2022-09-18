@@ -7,13 +7,14 @@ import java.util.*
 class E2ETest {
 
     @Test
-    fun generatesRequiredFields() {
+    fun excludeField() {
         val date = Date()
         val request = SimpleRequest(
             1,
             "2",
             3f,
             date
+            // excludeThis being excluded
         )
         request.field2 = "var2"
 
@@ -23,10 +24,10 @@ class E2ETest {
 
 
     // test multiple classes in same file
+
     // nested fields with classes outside => need to change the type to `${type}Request` 
     // nested classes with nested fields => needs to fix creation of file logic...
     //      this also means nest inside the request object. same structure
-    // fields with default values
 
     // when visiting i could some data too. that would make things easier esp multiple classes in same file
     // idk will see.
