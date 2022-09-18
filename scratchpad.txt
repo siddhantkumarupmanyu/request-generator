@@ -1,0 +1,4 @@
+
+for now it's an overkill, but just to let me know something like this exists...
+
+see what i found https://github.com/tschuchortdev/kotlin-compile-testing

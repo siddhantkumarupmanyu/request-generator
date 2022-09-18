@@ -19,14 +19,20 @@ class RequestObjectProcessor(
             return deferredSymbols()
         }
 
-        val fileOutputStream = codeGenerator.createNewFile(Dependencies(false), "com.example", "SomeValueObjectRequest")
+        val files = resolver.getAllFiles()
 
-        val writer = OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)
+        for (file in files) {
+            val name = file.fileName.removeSuffix(".kt") + "Request"
+            
+            val fileOutputStream = codeGenerator.createNewFile(Dependencies(false), "com.example", name)
 
-        writer.write("package com.example \n")
-        writer.write("data class NeededRequest(val test1: String) \n")
+            val writer = OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)
 
-        writer.close()
+            writer.write("package com.example \n")
+            writer.write("data class $name(val toWork: Int) \n")
+
+            writer.close()
+        }
 
         invoked = true
         return deferredSymbols()

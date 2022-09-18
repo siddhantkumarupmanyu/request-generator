@@ -6,8 +6,13 @@ class E2ETest {
 
     @Test
     fun generateRequestObject() {
-        val request = NeededRequest("test")
-        // val request2 = AnotherNeededRequest("test")
+        val request = NeededRequest(1)
+        val request2 = AnotherNeededRequest(1)
     }
 
+    // only annotated ones are generated    
+    // test multiple classes in same file
+    // different packages
+    // fields are generated
+    // nested fields
 }
