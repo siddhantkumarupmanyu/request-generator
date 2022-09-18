@@ -3,6 +3,7 @@ package com.example.processor
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import java.io.OutputStream
 import java.io.OutputStreamWriter
@@ -27,12 +28,21 @@ class RequestObjectVisitor(private val codeGenerator: CodeGenerator) : KSVisitor
             )
         fileWriter = OutputStreamWriter(fileStream, StandardCharsets.UTF_8)
 
-        // visit inside
         fileWriter.writeLine("package ${classDeclaration.packageName.asString()}")
-        fileWriter.writeLine("data class WithSingleFieldRequest(val forDataClass: Int)")
+        fileWriter.writeLine("")
+        fileWriter.writeLine("data class ${fileName}(")
 
-        // close the fileWriter 
+        val properties = classDeclaration.getAllProperties()
+        properties.forEach {
+            it.accept(this, Unit)
+        }
+
+        fileWriter.writeLine(")")
         fileWriter.close()
+    }
+
+    override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: Unit) {
+        fileWriter.writeLine("val ${property.simpleName.asString()}: ${property.type},")
     }
 
     private fun OutputStreamWriter.writeLine(str: String) {
