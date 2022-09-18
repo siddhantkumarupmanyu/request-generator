@@ -1,5 +1,7 @@
 package com.example.processor
 
+import com.google.devtools.ksp.KspExperimental
+import com.google.devtools.ksp.isAnnotationPresent
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
@@ -12,8 +14,7 @@ import java.nio.charset.StandardCharsets
 // KSVisitorVoid is an adapter
 class RequestObjectVisitor(
     private val codeGenerator: CodeGenerator,
-
-    ) : KSVisitorVoid() {
+) : KSVisitorVoid() {
 
     private var fileWriter = OutputStreamWriter(OutputStream.nullOutputStream())
 
@@ -49,7 +50,10 @@ class RequestObjectVisitor(
         fileWriter.close()
     }
 
+    @OptIn(KspExperimental::class)
     override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: Unit) {
+        if (property.isAnnotationPresent(GenerateRequest.Exclude::class)) return
+        
         val variableType = if (property.isMutable) "var" else "val"
         val fullyQualifiedType = property.type.resolve().declaration.qualifiedName!!.asString()
         fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${fullyQualifiedType},")

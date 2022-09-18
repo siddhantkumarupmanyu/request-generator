@@ -7,6 +7,9 @@ import java.util.*
 data class WithFields(
     val field1: Int,
     var field2: String,
-    val field3: Float,
-    val date: Date
+    val field3: kotlin.Float,
+    val date: Date,
+
+    @GenerateRequest.Exclude
+    val excludeThis: Int
 )
