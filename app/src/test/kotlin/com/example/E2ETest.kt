@@ -7,7 +7,7 @@ import java.util.*
 class E2ETest {
 
     @Test
-    fun simpleDataClass() {
+    fun generatesRequiredFields() {
         val date = Date()
         val request = SimpleRequest(
             1,
