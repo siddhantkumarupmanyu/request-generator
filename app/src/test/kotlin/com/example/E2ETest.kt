@@ -16,6 +16,7 @@ class E2ETest {
     @Test
     fun generatesRequiredFields() {
         val request = WithFieldsRequest(1, "2", 3f)
+        request.field2 = "var2"
     }
 
 

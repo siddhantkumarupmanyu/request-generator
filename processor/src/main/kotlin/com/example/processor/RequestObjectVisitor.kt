@@ -42,7 +42,8 @@ class RequestObjectVisitor(private val codeGenerator: CodeGenerator) : KSVisitor
     }
 
     override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: Unit) {
-        fileWriter.writeLine("val ${property.simpleName.asString()}: ${property.type},")
+        val variableType = if (property.isMutable) "var" else "val"
+        fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${property.type},")
     }
 
     private fun OutputStreamWriter.writeLine(str: String) {
