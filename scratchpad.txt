@@ -1,4 +1,9 @@
 
+release v1
+    with only data classes support
+
+=======================================
+
 what is aggregation actually?
     https://kotlinlang.org/docs/ksp-incremental.html
 
