@@ -17,7 +17,7 @@ class RequestObjectVisitor(private val codeGenerator: CodeGenerator) : KSVisitor
         // todo: fail fast if not a data class
 
         val fileName = classDeclaration.simpleName.asString() + "Request"
-        
+
         val sourceFile = classDeclaration.containingFile!!
         val fileStream =
             codeGenerator.createNewFile(
@@ -29,7 +29,7 @@ class RequestObjectVisitor(private val codeGenerator: CodeGenerator) : KSVisitor
 
         // visit inside
         fileWriter.writeLine("package ${classDeclaration.packageName.asString()}")
-        fileWriter.writeLine("data class NeededRequest(val toWork: Int)")
+        fileWriter.writeLine("data class WithSingleFieldRequest(val forDataClass: Int)")
 
         // close the fileWriter 
         fileWriter.close()

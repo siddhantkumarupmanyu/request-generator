@@ -6,20 +6,23 @@ import org.junit.Test
 class E2ETest {
 
     @Test
-    fun generateWithCorrectPackage() {
-        val request = NeededRequest(1)
-
-        // assertThat()
-        // val request2 = AnotherNeededRequest(1)
+    fun generatesWithCorrectPackage() {
+        val request = WithSingleFieldRequest(1)
 
         assertThat(request::class.isData).isTrue()
         assertThat(request::class.java.packageName).isEqualTo("com.example")
     }
 
+    @Test
+    fun generatedRequiredFields() {
+
+    }
+
     // test multiple classes in same file
     // fields are generated
-    // excluding fields
-    // nested fields => getSymbolsWithAnnotation with true
+    // excluded fields not generated
+    // nested fields with classes outside => need to change the type to `${type}Request` 
     // nested classes with nested fields => needs to fix creation of file logic...
     //      this also means nest inside the request object. same structure
+    // fields with default values
 }
