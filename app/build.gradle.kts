@@ -20,6 +20,8 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
+    testImplementation("org.assertj:assertj-core:3.23.1")
+    testImplementation(kotlin("reflect"))
 }
 
 application {

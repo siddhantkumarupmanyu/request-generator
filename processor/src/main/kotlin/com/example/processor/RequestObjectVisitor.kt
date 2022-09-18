@@ -14,19 +14,28 @@ class RequestObjectVisitor(private val codeGenerator: CodeGenerator) : KSVisitor
     private var fileWriter = OutputStreamWriter(OutputStream.nullOutputStream())
 
     override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-        // todo: handle if it's not a class 
+        // todo: fail fast if not a data class
 
         val fileName = classDeclaration.simpleName.asString() + "Request"
-
-        // todo: handle nested data classes
+        
+        val sourceFile = classDeclaration.containingFile!!
         val fileStream =
-            codeGenerator.createNewFile(Dependencies(false, classDeclaration.containingFile!!), "com.example", fileName)
+            codeGenerator.createNewFile(
+                Dependencies(false, sourceFile),
+                sourceFile.packageName.toString(),
+                fileName
+            )
         fileWriter = OutputStreamWriter(fileStream, StandardCharsets.UTF_8)
 
         // visit inside
-        fileWriter.write("data class NeededRequest(val toWork: Int)")
+        fileWriter.writeLine("package ${classDeclaration.packageName.asString()}")
+        fileWriter.writeLine("data class NeededRequest(val toWork: Int)")
 
         // close the fileWriter 
         fileWriter.close()
+    }
+
+    private fun OutputStreamWriter.writeLine(str: String) {
+        this.write("$str\n")
     }
 }
