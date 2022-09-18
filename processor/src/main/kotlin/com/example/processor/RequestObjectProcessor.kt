@@ -5,6 +5,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.validate
 import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 
@@ -12,13 +13,7 @@ class RequestObjectProcessor(
     private val codeGenerator: CodeGenerator
 ) : SymbolProcessor {
 
-    var invoked = false
-
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        if (invoked) {
-            return deferredSymbols()
-        }
-
         val files = resolver.getAllFiles()
 
         for (file in files) {
@@ -34,11 +29,12 @@ class RequestObjectProcessor(
             writer.close()
         }
 
-        invoked = true
-        return deferredSymbols()
+        return deferredSymbols(files)
     }
 
-    // for now, supposing we processed all the symbols
-    private fun deferredSymbols(): List<KSAnnotated> = emptyList()
+    // https://kotlinlang.org/docs/ksp-multi-round.html#advanced
+    private fun deferredSymbols(symbols: Sequence<KSAnnotated>): List<KSAnnotated> {
+        return symbols.filter { !it.validate() }.toList()
+    }
 
 }

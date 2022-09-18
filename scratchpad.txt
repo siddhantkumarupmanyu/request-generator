@@ -1,4 +1,7 @@
 
-for now it's an overkill, but just to let me know something like this exists...
+what is aggregation actually?
+    https://kotlinlang.org/docs/ksp-incremental.html
 
+
+for now it's an overkill, but just to let me know something like this exists...
 see what i found https://github.com/tschuchortdev/kotlin-compile-testing
