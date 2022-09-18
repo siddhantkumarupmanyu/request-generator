@@ -7,27 +7,20 @@ import java.util.*
 class E2ETest {
 
     @Test
-    fun generatesWithCorrectPackage() {
-        val request = WithSingleFieldRequest(1)
-
-        assertThat(request::class.isData).isTrue()
-        assertThat(request::class.java.packageName).isEqualTo("com.example")
-    }
-
-    @Test
-    fun generatesRequiredFields() {
+    fun simpleDataClass() {
         val date = Date()
-        val request = WithFieldsRequest(
+        val request = SimpleRequest(
             1,
             "2",
             3f,
             date
         )
         request.field2 = "var2"
+
+        assertThat(request::class.isData).isTrue()
+        assertThat(request::class.java.packageName).isEqualTo("com.example")
     }
 
-
-    // excluded fields not generated
 
     // test multiple classes in same file
     // nested fields with classes outside => need to change the type to `${type}Request` 
