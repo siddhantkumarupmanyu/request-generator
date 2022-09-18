@@ -2,6 +2,7 @@ package com.example
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import java.util.*
 
 class E2ETest {
 
@@ -15,14 +16,18 @@ class E2ETest {
 
     @Test
     fun generatesRequiredFields() {
-        val request = WithFieldsRequest(1, "2", 3f)
+        val date = Date()
+        val request = WithFieldsRequest(
+            1,
+            "2",
+            3f,
+            date
+        )
         request.field2 = "var2"
     }
 
 
     // excluded fields not generated
-    // fields can be var
-    // need to fix the imports too
 
     // test multiple classes in same file
     // nested fields with classes outside => need to change the type to `${type}Request` 

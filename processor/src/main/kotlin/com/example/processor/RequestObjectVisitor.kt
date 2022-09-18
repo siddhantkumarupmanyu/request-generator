@@ -10,7 +10,10 @@ import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 
 // KSVisitorVoid is an adapter
-class RequestObjectVisitor(private val codeGenerator: CodeGenerator) : KSVisitorVoid() {
+class RequestObjectVisitor(
+    private val codeGenerator: CodeGenerator,
+
+    ) : KSVisitorVoid() {
 
     private var fileWriter = OutputStreamWriter(OutputStream.nullOutputStream())
 
@@ -30,6 +33,11 @@ class RequestObjectVisitor(private val codeGenerator: CodeGenerator) : KSVisitor
 
         fileWriter.writeLine("package ${classDeclaration.packageName.asString()}")
         fileWriter.writeLine("")
+
+        classDeclaration.typeParameters.forEach {
+            fileWriter.writeLine(it.simpleName.asString())
+        }
+
         fileWriter.writeLine("data class ${fileName}(")
 
         val properties = classDeclaration.getAllProperties()
@@ -43,7 +51,8 @@ class RequestObjectVisitor(private val codeGenerator: CodeGenerator) : KSVisitor
 
     override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: Unit) {
         val variableType = if (property.isMutable) "var" else "val"
-        fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${property.type},")
+        val fullyQualifiedType = property.type.resolve().declaration.qualifiedName!!.asString()
+        fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${fullyQualifiedType},")
     }
 
     private fun OutputStreamWriter.writeLine(str: String) {
