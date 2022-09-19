@@ -22,6 +22,17 @@ class E2ETest {
         assertThat(request::class.java.packageName).isEqualTo("com.example")
     }
 
+    @Test
+    fun multipleClassesInSameFile() {
+        // in terms of compiled code.
+        // for classes, it does not matter.
+        // but for top level functions it generates a Kt class
+        // so generating different files for each class no matter how they are declared
+
+        val request1 = SameFileClass1Request(1)
+        val request2 = SameFileClass2Request(1)
+    }
+
 
     // test multiple classes in same file
 

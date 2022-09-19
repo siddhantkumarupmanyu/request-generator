@@ -27,7 +27,7 @@ class RequestObjectVisitor(
         val fileStream =
             codeGenerator.createNewFile(
                 Dependencies(false, sourceFile),
-                sourceFile.packageName.toString(),
+                sourceFile.packageName.asString(),
                 fileName
             )
         fileWriter = OutputStreamWriter(fileStream, StandardCharsets.UTF_8)
