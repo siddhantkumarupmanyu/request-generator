@@ -1,10 +1,21 @@
 package com.example
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 
 class E2ETest {
+
+    @Test
+    fun externalDependency() {
+        val date = Date()
+        
+        val request = ExternalDependencyRequest(1, date)
+        request.field = 2
+
+        assertThat(request::class.isData).isTrue()
+    }
 
     @Test
     fun inTheSamePackage() {
@@ -47,8 +58,20 @@ class E2ETest {
         val request2 = SameFileClass2Request(1)
     }
 
+    @Test
+    fun classReferenceOtherAnnotatedClasses_Outside() {
+        val classC = com.example.outside.ClassC(3)
 
-    // test multiple classes in same file
+        val requestB = com.example.outside.ClassBRequest(2)
+        val requestA = com.example.outside.ClassARequest(1, requestB, classC)
+    }
+
+    @Ignore
+    @Test
+    fun classReferenceOtherAnnotatedClasses_Nested() {
+
+    }
+
 
     // nested fields with classes outside => need to change the type to `${type}Request` 
     // nested classes with nested fields => needs to fix creation of file logic...

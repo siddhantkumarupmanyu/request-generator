@@ -53,9 +53,13 @@ class RequestObjectVisitor(
     @OptIn(KspExperimental::class)
     override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: Unit) {
         if (property.isAnnotationPresent(GenerateRequest.Exclude::class)) return
-        
+
         val variableType = if (property.isMutable) "var" else "val"
-        val fullyQualifiedType = property.type.resolve().declaration.qualifiedName!!.asString()
+
+        val declaration = property.type.resolve().declaration
+        
+        val fullyQualifiedType = declaration.qualifiedName!!.asString()
+
         fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${fullyQualifiedType},")
     }
 
