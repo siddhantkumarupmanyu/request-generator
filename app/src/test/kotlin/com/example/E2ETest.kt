@@ -7,9 +7,24 @@ import java.util.*
 class E2ETest {
 
     @Test
+    fun inTheSamePackage() {
+        val date = Date()
+        val request = com.example.other.OtherPackageRequest(
+            1,
+            "2",
+            3f,
+            date
+        )
+        request.field2 = "var2"
+
+        assertThat(request::class.isData).isTrue()
+        assertThat(request::class.java.packageName).isEqualTo("com.example.other")
+    }
+
+    @Test
     fun excludeField() {
         val date = Date()
-        val request = SimpleRequest(
+        val request = ExcludedRequest(
             1,
             "2",
             3f,
@@ -19,7 +34,6 @@ class E2ETest {
         request.field2 = "var2"
 
         assertThat(request::class.isData).isTrue()
-        assertThat(request::class.java.packageName).isEqualTo("com.example")
     }
 
     @Test
