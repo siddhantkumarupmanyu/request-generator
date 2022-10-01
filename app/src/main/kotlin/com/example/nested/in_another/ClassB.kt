@@ -1,4 +1,6 @@
-package com.example.nested_in_another
+package com.example.nested.in_another
+
+import com.example.processor.GenerateRequest
 
 // @GenerateRequest
 data class ClassB(

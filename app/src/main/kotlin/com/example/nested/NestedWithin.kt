@@ -1,6 +1,6 @@
-package com.example
+package com.example.nested
 
-data class Nested(
+data class NestedWithin(
     val field: Int,
     val nested1: Nested1,
     val nested2: Nested2

@@ -54,31 +54,30 @@ class E2ETest {
     }
 
     @Test
-    fun otherAnnotatedClasses() {
+    fun otherClasses() {
         val classC = com.example.top_level.ClassC(3)
 
         val requestB = com.example.top_level.ClassBRequest(2)
         val requestA = com.example.top_level.ClassARequest(1, requestB, classC)
     }
 
+    @Test
+    fun outerClassNotAnnotated() {
+        val nestedAnnotatedRequest = com.example.nested.OuterClassNotAnnotatedRequest.NestedAnnotatedRequest(1)
+    }
+
     // @Test
-    // fun classReferenceOtherAnnotatedClasses_NestedInAnother() {
+    // fun nestedInAnotherClass() {
     //     val requestBNested = com.example.nested_in_another.ClassBRequest.ClassBNestedRequest(2)
     //
-    //     val requestB = com.example.nested_in_another.ClassBRequest(1)
-    //     val requestA = com.example.nested_in_another.ClassARequest(1, requestB, requestBNested)
+    //     // val requestB = com.example.nested_in_another.ClassBRequest(1)
+    //     // val requestA = com.example.nested_in_another.ClassARequest(1, requestB, requestBNested)
     // }
 
     @Ignore
     @Test
     fun classReferenceOtherAnnotatedClasses_NestedInItself() {
 
-    }
-
-    @Ignore
-    @Test
-    fun topLevelClassNotAnnotated() {
-        // need to see...
     }
 
 }
