@@ -5,6 +5,7 @@ import com.google.devtools.ksp.isAnnotationPresent
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import java.io.OutputStream
@@ -57,13 +58,29 @@ class RequestObjectVisitor(
         val variableType = if (property.isMutable) "var" else "val"
 
         val declaration = property.type.resolve().declaration
-        
-        val fullyQualifiedType = declaration.qualifiedName!!.asString()
+        require(declaration is KSClassDeclaration) { "declaration should be a class" }
+        val fullyQualifiedType = getFullQualifiedName(declaration)
 
         fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${fullyQualifiedType},")
     }
 
     private fun OutputStreamWriter.writeLine(str: String) {
         this.write("$str\n")
+    }
+
+    private fun getFullQualifiedName(declaration: KSClassDeclaration): String {
+        if (isRoot(declaration)) {
+            return declaration.qualifiedName!!.asString()
+        } else {
+            val parent = declaration.parentDeclaration
+            require(parent is KSClassDeclaration) { "parent declaration should be a class" }
+            return getFullQualifiedName(parent) + "Request"
+        }
+    }
+
+    @OptIn(KspExperimental::class)
+    private fun isRoot(declaration: KSClassDeclaration): Boolean {
+        if (!declaration.isAnnotationPresent(GenerateRequest::class)) return true
+        return declaration.parentDeclaration == null
     }
 }

@@ -1,4 +1,4 @@
-package com.example.outside
+package com.example.top_level
 
 import com.example.processor.GenerateRequest
 

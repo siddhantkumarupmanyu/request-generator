@@ -1,6 +1,7 @@
 package com.example
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Assert.fail
 import org.junit.Ignore
 import org.junit.Test
 import java.util.*
@@ -59,27 +60,31 @@ class E2ETest {
     }
 
     @Test
-    fun classReferenceOtherAnnotatedClasses_Outside() {
-        val classC = com.example.outside.ClassC(3)
+    fun classReferenceOtherAnnotatedClasses_TopLevel() {
+        val classC = com.example.top_level.ClassC(3)
 
-        val requestB = com.example.outside.ClassBRequest(2)
-        val requestA = com.example.outside.ClassARequest(1, requestB, classC)
+        val requestB = com.example.top_level.ClassBRequest(2)
+        val requestA = com.example.top_level.ClassARequest(1, requestB, classC)
+    }
+
+    @Test
+    fun classReferenceOtherAnnotatedClasses_NestedInAnother() {
+        val requestBNested = com.example.nested_in_another.ClassBRequest.ClassBNestedRequest(2)
+
+        val requestB = com.example.nested_in_another.ClassBRequest(1)
+        val requestA = com.example.nested_in_another.ClassARequest(1, requestB, requestBNested)
     }
 
     @Ignore
     @Test
-    fun classReferenceOtherAnnotatedClasses_Nested() {
+    fun classReferenceOtherAnnotatedClasses_NestedInItself() {
 
     }
 
+    @Ignore
+    @Test
+    fun topLevelClassNotAnnotated() {
+        fail("not supported: outer class at top level has to be annotated with @GenerateRequest")
+    }
 
-    // nested fields with classes outside => need to change the type to `${type}Request` 
-    // nested classes with nested fields => needs to fix creation of file logic...
-    //      this also means nest inside the request object. same structure
-
-    // when visiting i could some data too. that would make things easier esp multiple classes in same file
-    // idk will see.
-    // tbh imo, my visitor do not even need to create file we will create all the required files beforehand
-    // my visitor will just write to those files. that makes sense.
-    // instead of code generator we will pass the fileWrite, let's see
 }

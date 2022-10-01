@@ -2,6 +2,9 @@
 release v1
     with only data classes support
 
+support for generics
+    with nesting
+
 =======================================
 
 what is aggregation actually?
