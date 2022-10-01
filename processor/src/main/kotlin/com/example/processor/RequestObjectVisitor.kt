@@ -1,11 +1,12 @@
 package com.example.processor
 
+import com.example.processor.Utils.writeLine
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.isAnnotationPresent
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSDeclaration
+import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import java.io.OutputStream
@@ -19,28 +20,33 @@ class RequestObjectVisitor(
 
     private var fileWriter = OutputStreamWriter(OutputStream.nullOutputStream())
 
-    override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-        // todo: fail fast if not a data class
+    override fun visitFile(file: KSFile, data: Unit) {
+        val classDeclarations = file.declarations
 
-        val fileName = classDeclaration.simpleName.asString() + "Request"
+        val fileName = file.fileName + "Request"
 
-        val sourceFile = classDeclaration.containingFile!!
         val fileStream =
             codeGenerator.createNewFile(
-                Dependencies(false, sourceFile),
-                sourceFile.packageName.asString(),
+                Dependencies(false, file),
+                file.packageName.asString(),
                 fileName
             )
+
         fileWriter = OutputStreamWriter(fileStream, StandardCharsets.UTF_8)
+        fileWriter.writeLine("package ${file.packageName.asString()}")
 
-        fileWriter.writeLine("package ${classDeclaration.packageName.asString()}")
-        fileWriter.writeLine("")
-
-        classDeclaration.typeParameters.forEach {
-            fileWriter.writeLine(it.simpleName.asString())
+        classDeclarations.forEach {
+            it.accept(this, Unit)
         }
 
-        fileWriter.writeLine("data class ${fileName}(")
+        fileWriter.close()
+    }
+
+    override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
+        // todo: fail fast if not a data class
+        fileWriter.writeLine("")
+
+        fileWriter.writeLine("data class ${classDeclaration.simpleName.asString()}Request (")
 
         val properties = classDeclaration.getAllProperties()
         properties.forEach {
@@ -48,7 +54,6 @@ class RequestObjectVisitor(
         }
 
         fileWriter.writeLine(")")
-        fileWriter.close()
     }
 
     @OptIn(KspExperimental::class)
@@ -62,10 +67,6 @@ class RequestObjectVisitor(
         val fullyQualifiedType = getFullQualifiedName(declaration)
 
         fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${fullyQualifiedType},")
-    }
-
-    private fun OutputStreamWriter.writeLine(str: String) {
-        this.write("$str\n")
     }
 
     private fun getFullQualifiedName(declaration: KSClassDeclaration): String {
