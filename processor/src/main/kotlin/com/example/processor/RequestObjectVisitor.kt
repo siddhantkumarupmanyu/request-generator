@@ -14,6 +14,7 @@ import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 
 // KSVisitorVoid is an adapter
+@OptIn(KspExperimental::class)
 class RequestObjectVisitor(
     private val codeGenerator: CodeGenerator,
 ) : KSVisitorVoid() {
@@ -55,9 +56,27 @@ class RequestObjectVisitor(
         }
 
         fileWriter.writeLine(")")
+
+        fileWriter.writeLine("{")
+
+        val nestedClasses =
+            classDeclaration.declarations.fold(listOf<KSClassDeclaration>()) { classes, declaration ->
+                if (declaration is KSClassDeclaration) {
+                    classes + declaration
+                } else {
+                    classes
+                }
+            }
+
+        nestedClasses.forEach {
+            // if (it.isAnnotationPresent(GenerateRequest::class)) {
+                it.accept(this, Unit)
+            // }
+        }
+
+        fileWriter.writeLine("}")
     }
 
-    @OptIn(KspExperimental::class)
     override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: Unit) {
         if (property.isAnnotationPresent(GenerateRequest.Exclude::class)) return
 
@@ -70,7 +89,6 @@ class RequestObjectVisitor(
         fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${fullyQualifiedType},")
     }
 
-    @OptIn(KspExperimental::class)
     private fun getFullQualifiedName(declaration: KSClassDeclaration): String {
         // if (isRoot(declaration)) {
         var fullyQualifiedName = declaration.qualifiedName!!.asString()
