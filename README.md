@@ -8,7 +8,8 @@ so either one have to make fields nullable just to make it request compatable.
 or write another boilerplate class with none of the required fields.  
 and this is what this does. it generates that boilerplate source code, classes for you using ksp. 
 
-just annotate your data class with `@GenerateRequest` and let this generate Request Object for that data class.
+just annotate your data class with `@GenerateRequest` and let this generate Request Object for that data class.  
+and to exclude a field annotate the field with `@GenerateRequest.Exclude`
 
 ## todo
 - toRequest extension function
