@@ -1,6 +1,5 @@
 package sku.processor.generator.request
 
-import sku.processor.generator.request.Utils.writeLine
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.isAnnotationPresent
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -9,6 +8,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
+import sku.processor.generator.request.Utils.writeLine
 import java.io.OutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
@@ -92,13 +92,13 @@ class RequestObjectVisitor(
     private fun getFullQualifiedName(declaration: KSClassDeclaration): String {
         if (!declaration.isAnnotationPresent(GenerateRequest::class)) return declaration.qualifiedName!!.asString()
 
-        fun backTransverseToOuterClass(declaration: KSClassDeclaration): String {
+        tailrec fun backTransverseToOuterClass(declaration: KSClassDeclaration, append: String = ""): String {
             if (isRoot(declaration)) {
-                return declaration.qualifiedName!!.asString() + "Request"
+                return declaration.qualifiedName!!.asString() + "Request" + append
             } else {
                 val parent = declaration.parentDeclaration
                 require(parent is KSClassDeclaration) { "parent declaration should be a class" }
-                return backTransverseToOuterClass(parent) + "." + declaration.simpleName.asString() + "Request"
+                return backTransverseToOuterClass(parent, "." + declaration.simpleName.asString() + "Request" + append)
             }
         }
 
