@@ -1,5 +1,7 @@
 # Request Generator
 
+[![ci](https://github.com/siddhantkumarupmanyu/request-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/siddhantkumarupmanyu/request-generator/actions/workflows/ci.yml)
+
 ## what/why/how
 when sending api requests, the requests contains less fields than response.  
 but response is what actually used throughtout.  
