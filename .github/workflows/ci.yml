@@ -21,4 +21,4 @@ jobs:
           java-version: '17'
           cache: 'gradle'
       - name: run tests
-        run: chmod +x gradlew && ./gradlew --tests "sku.processsor.generator.request.app.E2ETest" --no-daemon
+        run: chmod +x gradlew && ./gradlew test --tests "sku.processsor.generator.request.app.E2ETest" --no-daemon
