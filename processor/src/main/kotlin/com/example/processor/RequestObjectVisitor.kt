@@ -92,17 +92,17 @@ class RequestObjectVisitor(
     private fun getFullQualifiedName(declaration: KSClassDeclaration): String {
         if (!declaration.isAnnotationPresent(GenerateRequest::class)) return declaration.qualifiedName!!.asString()
 
-        if (isRoot(declaration)) {
-            var fullyQualifiedName = declaration.qualifiedName!!.asString()
-            if (declaration.isAnnotationPresent(GenerateRequest::class)) {
-                fullyQualifiedName += "Request"
+        fun nameForNestedAndRoot(declaration: KSClassDeclaration): String {
+            if (isRoot(declaration)) {
+                return declaration.qualifiedName!!.asString() + "Request"
+            } else {
+                val parent = declaration.parentDeclaration
+                require(parent is KSClassDeclaration) { "parent declaration should be a class" }
+                return nameForNestedAndRoot(parent) + "." + declaration.simpleName.asString() + "Request"
             }
-            return fullyQualifiedName
-        } else {
-            val parent = declaration.parentDeclaration
-            require(parent is KSClassDeclaration) { "parent declaration should be a class" }
-            return getFullQualifiedName(parent) + "." + declaration.simpleName.asString() + "Request"
         }
+
+        return nameForNestedAndRoot(declaration)
     }
 
     private fun isRoot(declaration: KSClassDeclaration): Boolean {
