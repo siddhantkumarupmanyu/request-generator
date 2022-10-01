@@ -2,7 +2,6 @@ package com.example
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
-import org.junit.Ignore
 import org.junit.Test
 import java.util.*
 
@@ -93,10 +92,14 @@ class E2ETest {
             )
     }
 
-    @Ignore
     @Test
-    fun classReferenceOtherAnnotatedClasses_NestedInItself() {
+    fun nestedWithin() {
+        val nested11Request = com.example.nested.NestedWithinRequest.Nested1Request.Nested11Request(1)
+        val nested1Request = com.example.nested.NestedWithinRequest.Nested1Request(nested11Request)
 
+        val nested2Request = com.example.nested.NestedWithinRequest.Nested2Request(nested1Request, nested11Request, 2)
+
+        val request = com.example.nested.NestedWithinRequest(1, nested1Request, nested2Request)
     }
 
 }
