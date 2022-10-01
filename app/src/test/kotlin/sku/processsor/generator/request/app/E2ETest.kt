@@ -20,7 +20,7 @@ class E2ETest {
     @Test
     fun inTheSamePackage() {
         val date = Date()
-        val request = com.example.other.OtherPackageRequest(
+        val request = sku.processsor.generator.request.app.other.OtherPackageRequest(
             1,
             "2",
             3f,
@@ -29,7 +29,7 @@ class E2ETest {
         request.field2 = "var2"
 
         assertThat(request::class.isData).isTrue()
-        assertThat(request::class.java.packageName).isEqualTo("com.example.other")
+        assertThat(request::class.java.packageName).isEqualTo("sku.processsor.generator.request.app.other")
     }
 
     @Test
@@ -55,34 +55,35 @@ class E2ETest {
 
     @Test
     fun otherClasses() {
-        val classC = com.example.top_level.ClassC(3)
+        val classC = sku.processsor.generator.request.app.top_level.ClassC(3)
 
-        val requestB = com.example.top_level.ClassBRequest(2)
-        val requestA = com.example.top_level.ClassARequest(1, requestB, classC)
+        val requestB = sku.processsor.generator.request.app.top_level.ClassBRequest(2)
+        val requestA = sku.processsor.generator.request.app.top_level.ClassARequest(1, requestB, classC)
     }
 
     @Test
     fun outerClassNotAnnotated() {
-        val nestedAnnotatedRequest = com.example.nested.OuterClassNotAnnotatedRequest.NestedAnnotatedRequest(1)
+        val nestedAnnotatedRequest =
+            sku.processsor.generator.request.app.nested.OuterClassNotAnnotatedRequest.NestedAnnotatedRequest(1)
 
         // should not generate NestedNotAnnotatedRequest
         assertThatExceptionOfType(ClassNotFoundException::class.java).isThrownBy {
-            Class.forName("com.example.nested.OuterClassNotAnnotatedRequest\$NestedNotAnnotatedRequest")
+            Class.forName("ku.processsor.generator.request.app.nested.OuterClassNotAnnotatedRequest\$NestedNotAnnotatedRequest")
         }
     }
 
     @Test
     fun nestedInAnotherClass() {
-        val nestedNotAnnotated = com.example.nested.in_another.ClassB.NotAnnotated(1)
+        val nestedNotAnnotated = sku.processsor.generator.request.app.nested.in_another.ClassB.NotAnnotated(1)
 
-        val bNestedRequest = com.example.nested.in_another.ClassBRequest.NestedRequest(1)
-        val requestB = com.example.nested.in_another.ClassBRequest(1)
+        val bNestedRequest = sku.processsor.generator.request.app.nested.in_another.ClassBRequest.NestedRequest(1)
+        val requestB = sku.processsor.generator.request.app.nested.in_another.ClassBRequest(1)
 
-        val classC = com.example.nested.in_another.ClassC(1)
-        val classCNestedRequest = com.example.nested.in_another.ClassCRequest.NestedRequest(1)
+        val classC = sku.processsor.generator.request.app.nested.in_another.ClassC(1)
+        val classCNestedRequest = sku.processsor.generator.request.app.nested.in_another.ClassCRequest.NestedRequest(1)
 
         val requestA =
-            com.example.nested.in_another.ClassARequest(
+            sku.processsor.generator.request.app.nested.in_another.ClassARequest(
                 1,
                 requestB,
                 bNestedRequest,
@@ -94,12 +95,18 @@ class E2ETest {
 
     @Test
     fun nestedWithin() {
-        val nested11Request = _root_ide_package_.sku.processsor.generator.request.app.nested.NestedWithinRequest.Nested1Request.Nested11Request(1)
-        val nested1Request = _root_ide_package_.sku.processsor.generator.request.app.nested.NestedWithinRequest.Nested1Request(nested11Request)
+        val nested11Request =
+            sku.processsor.generator.request.app.nested.NestedWithinRequest.Nested1Request.Nested11Request(1)
+        val nested1Request =
+            sku.processsor.generator.request.app.nested.NestedWithinRequest.Nested1Request(nested11Request)
 
-        val nested2Request = _root_ide_package_.sku.processsor.generator.request.app.nested.NestedWithinRequest.Nested2Request(nested1Request, nested11Request, 2)
+        val nested2Request = sku.processsor.generator.request.app.nested.NestedWithinRequest.Nested2Request(
+            nested1Request,
+            nested11Request,
+            2
+        )
 
-        val request = _root_ide_package_.sku.processsor.generator.request.app.nested.NestedWithinRequest(
+        val request = sku.processsor.generator.request.app.nested.NestedWithinRequest(
             1,
             nested1Request,
             nested2Request
