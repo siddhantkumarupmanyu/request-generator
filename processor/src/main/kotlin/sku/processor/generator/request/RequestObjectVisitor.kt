@@ -92,21 +92,27 @@ class RequestObjectVisitor(
     private fun getFullQualifiedName(declaration: KSClassDeclaration): String {
         if (!declaration.isAnnotationPresent(GenerateRequest::class)) return declaration.qualifiedName!!.asString()
 
-        tailrec fun transverseToOuterClass(declaration: KSClassDeclaration, append: String = ""): String {
-            if (isRoot(declaration)) {
-                return declaration.qualifiedName!!.asString() + "Request" + append
+        tailrec fun transverseToOuterClassAndGetQualifiedName(
+            classDeclaration: KSClassDeclaration,
+            append: String = ""
+        ): String {
+            if (isOuter(classDeclaration)) {
+                return classDeclaration.qualifiedName!!.asString() + "Request" + append
             } else {
-                val parent = declaration.parentDeclaration
-                require(parent is KSClassDeclaration) { "parent declaration should be a class" }
-                return transverseToOuterClass(parent, "." + declaration.simpleName.asString() + "Request" + append)
+                val parentClassDeclaration = classDeclaration.parentDeclaration
+                require(parentClassDeclaration is KSClassDeclaration) { "parent declaration should be a class" }
+                return transverseToOuterClassAndGetQualifiedName(
+                    parentClassDeclaration,
+                    "." + classDeclaration.simpleName.asString() + "Request" + append
+                )
             }
         }
 
-        return transverseToOuterClass(declaration)
+        return transverseToOuterClassAndGetQualifiedName(declaration)
     }
 
-    private fun isRoot(declaration: KSClassDeclaration): Boolean {
-        return declaration.parentDeclaration == null
+    private fun isOuter(classDeclaration: KSClassDeclaration): Boolean {
+        return classDeclaration.parentDeclaration == null
     }
 
     // since this actually doesn't affect the generated .class file name?
