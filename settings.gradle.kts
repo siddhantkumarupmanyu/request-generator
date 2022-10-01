@@ -1,5 +1,5 @@
 
-rootProject.name = "quickstart"
+rootProject.name = "request-generator"
 include("processor")
 include("app")
 
