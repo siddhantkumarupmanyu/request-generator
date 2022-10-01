@@ -10,5 +10,9 @@ data class OuterClassNotAnnotated(
     data class NestedAnnotated(
         val field: Int
     )
+    
+    data class NestedNotAnnotated(
+        val field: Int
+    )
 
 }

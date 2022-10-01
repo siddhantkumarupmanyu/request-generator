@@ -69,9 +69,9 @@ class RequestObjectVisitor(
             }
 
         nestedClasses.forEach {
-            // if (it.isAnnotationPresent(GenerateRequest::class)) {
+            if (it.isAnnotationPresent(GenerateRequest::class)) {
                 it.accept(this, Unit)
-            // }
+            }
         }
 
         fileWriter.writeLine("}")

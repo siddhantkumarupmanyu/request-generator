@@ -1,6 +1,7 @@
 package com.example
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Ignore
 import org.junit.Test
 import java.util.*
@@ -64,6 +65,11 @@ class E2ETest {
     @Test
     fun outerClassNotAnnotated() {
         val nestedAnnotatedRequest = com.example.nested.OuterClassNotAnnotatedRequest.NestedAnnotatedRequest(1)
+
+        // should not generate NestedNotAnnotatedRequest
+        assertThatExceptionOfType(ClassNotFoundException::class.java).isThrownBy {
+            Class.forName("com.example.nested.OuterClassNotAnnotatedRequest\$NestedNotAnnotatedRequest")
+        }
     }
 
     // @Test
