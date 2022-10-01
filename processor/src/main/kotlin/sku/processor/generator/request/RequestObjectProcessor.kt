@@ -1,4 +1,4 @@
-package com.example.processor
+package sku.processor.generator.request
 
 import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.processing.CodeGenerator

@@ -1,6 +1,6 @@
 package com.example.nested
 
-import com.example.processor.GenerateRequest
+import sku.processor.generator.request.GenerateRequest
 
 @GenerateRequest
 data class NestedWithin(

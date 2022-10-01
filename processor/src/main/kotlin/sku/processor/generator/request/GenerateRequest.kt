@@ -1,4 +1,4 @@
-package com.example.processor
+package sku.processor.generator.request
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)

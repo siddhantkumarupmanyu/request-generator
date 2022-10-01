@@ -1,6 +1,6 @@
 package com.example.top_level
 
-import com.example.processor.GenerateRequest
+import sku.processor.generator.request.GenerateRequest
 
 @GenerateRequest
 data class ClassB(

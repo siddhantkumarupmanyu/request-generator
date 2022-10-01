@@ -1,6 +1,6 @@
 package com.example
 
-import com.example.processor.GenerateRequest
+import sku.processor.generator.request.GenerateRequest
 import java.util.*
 
 @GenerateRequest

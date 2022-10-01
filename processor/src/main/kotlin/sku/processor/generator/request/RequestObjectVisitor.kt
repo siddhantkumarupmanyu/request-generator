@@ -1,6 +1,6 @@
-package com.example.processor
+package sku.processor.generator.request
 
-import com.example.processor.Utils.writeLine
+import sku.processor.generator.request.Utils.writeLine
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.isAnnotationPresent
 import com.google.devtools.ksp.processing.CodeGenerator
