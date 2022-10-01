@@ -72,13 +72,18 @@ class E2ETest {
         }
     }
 
-    // @Test
-    // fun nestedInAnotherClass() {
-    //     val requestBNested = com.example.nested_in_another.ClassBRequest.ClassBNestedRequest(2)
-    //
-    //     // val requestB = com.example.nested_in_another.ClassBRequest(1)
-    //     // val requestA = com.example.nested_in_another.ClassARequest(1, requestB, requestBNested)
-    // }
+    @Test
+    fun nestedInAnotherClass() {
+        val nestedNotAnnotated = com.example.nested.in_another.ClassB.NotAnnotated(1)
+
+        val bNestedRequest = com.example.nested.in_another.ClassBRequest.NestedRequest(1)
+        val requestB = com.example.nested.in_another.ClassBRequest(1)
+
+        val classC = com.example.nested.in_another.ClassC(1)
+
+        val requestA =
+            com.example.nested.in_another.ClassARequest(1, requestB, bNestedRequest, nestedNotAnnotated, classC)
+    }
 
     @Ignore
     @Test
