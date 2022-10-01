@@ -70,21 +70,24 @@ class RequestObjectVisitor(
         fileWriter.writeLine("$variableType ${property.simpleName.asString()}: ${fullyQualifiedType},")
     }
 
+    @OptIn(KspExperimental::class)
     private fun getFullQualifiedName(declaration: KSClassDeclaration): String {
-        if (isRoot(declaration)) {
-            return declaration.qualifiedName!!.asString()
-        } else {
-            val parent = declaration.parentDeclaration
-            require(parent is KSClassDeclaration) { "parent declaration should be a class" }
-            return getFullQualifiedName(parent) + "Request"
+        // if (isRoot(declaration)) {
+        var fullyQualifiedName = declaration.qualifiedName!!.asString()
+        if (declaration.isAnnotationPresent(GenerateRequest::class)) {
+            fullyQualifiedName += "Request"
         }
+        return fullyQualifiedName
+        // } else {
+        //     val parent = declaration.parentDeclaration
+        //     require(parent is KSClassDeclaration) { "parent declaration should be a class" }
+        //     return getFullQualifiedName(parent) + "Request"
+        // }
     }
 
-    @OptIn(KspExperimental::class)
-    private fun isRoot(declaration: KSClassDeclaration): Boolean {
-        if (!declaration.isAnnotationPresent(GenerateRequest::class)) return true
-        return declaration.parentDeclaration == null
-    }
+    // private fun isRoot(declaration: KSClassDeclaration): Boolean {
+    //     return declaration.parentDeclaration == null
+    // }
 
     // since this actually doesn't affect the generated .class file name?
     // so, i don't have test for this rn. 

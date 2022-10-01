@@ -1,8 +1,7 @@
 package com.example.nested_in_another
 
-import com.example.processor.GenerateRequest
 
-@GenerateRequest
+// @GenerateRequest
 data class ClassA(
     val field: Int,
     val classB: ClassB,

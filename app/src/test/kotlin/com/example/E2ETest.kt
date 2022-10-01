@@ -49,22 +49,17 @@ class E2ETest {
 
     @Test
     fun multipleClassesInSameFile() {
-        // in terms of compiled code.
-        // for classes, it does not matter.
-        // but for top level functions it generates a Kt class
-        // so generating different files for each class no matter how they are declared
-
         val request1 = SameFileClass1Request(1)
         val request2 = SameFileClass2Request(1)
     }
-    //
-    // @Test
-    // fun classReferenceOtherAnnotatedClasses_TopLevel() {
-    //     val classC = com.example.top_level.ClassC(3)
-    //
-    //     val requestB = com.example.top_level.ClassBRequest(2)
-    //     val requestA = com.example.top_level.ClassARequest(1, requestB, classC)
-    // }
+
+    @Test
+    fun otherAnnotatedClasses() {
+        val classC = com.example.top_level.ClassC(3)
+
+        val requestB = com.example.top_level.ClassBRequest(2)
+        val requestA = com.example.top_level.ClassARequest(1, requestB, classC)
+    }
 
     // @Test
     // fun classReferenceOtherAnnotatedClasses_NestedInAnother() {
