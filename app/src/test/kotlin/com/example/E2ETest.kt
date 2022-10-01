@@ -80,9 +80,17 @@ class E2ETest {
         val requestB = com.example.nested.in_another.ClassBRequest(1)
 
         val classC = com.example.nested.in_another.ClassC(1)
+        val classCNestedRequest = com.example.nested.in_another.ClassCRequest.NestedRequest(1)
 
         val requestA =
-            com.example.nested.in_another.ClassARequest(1, requestB, bNestedRequest, nestedNotAnnotated, classC)
+            com.example.nested.in_another.ClassARequest(
+                1,
+                requestB,
+                bNestedRequest,
+                nestedNotAnnotated,
+                classC,
+                classCNestedRequest
+            )
     }
 
     @Ignore

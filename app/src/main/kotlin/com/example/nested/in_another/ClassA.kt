@@ -10,5 +10,5 @@ data class ClassA(
     val classBNested: ClassB.Nested,
     val classBNestedNotAnnotated: ClassB.NotAnnotated,
     val classC: ClassC,
-    // val classCNested: ClassC.Nested // todo: use outer class not annotated, dry them
+    val classCNested: ClassC.Nested
 )
