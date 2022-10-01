@@ -1,7 +1,6 @@
 package com.example
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Assert.fail
 import org.junit.Ignore
 import org.junit.Test
 import java.util.*
@@ -11,7 +10,7 @@ class E2ETest {
     @Test
     fun externalDependency() {
         val date = Date()
-        
+
         val request = ExternalDependencyRequest(1, date)
         request.field = 2
 

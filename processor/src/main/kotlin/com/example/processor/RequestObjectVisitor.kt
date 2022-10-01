@@ -23,7 +23,7 @@ class RequestObjectVisitor(
     override fun visitFile(file: KSFile, data: Unit) {
         val classDeclarations = file.declarations
 
-        val fileName = file.fileName + "Request"
+        val fileName = stringWithDotKtRemoved(file.fileName) + "Request"
 
         val fileStream =
             codeGenerator.createNewFile(
@@ -41,6 +41,7 @@ class RequestObjectVisitor(
 
         fileWriter.close()
     }
+
 
     override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
         // todo: fail fast if not a data class
@@ -84,4 +85,8 @@ class RequestObjectVisitor(
         if (!declaration.isAnnotationPresent(GenerateRequest::class)) return true
         return declaration.parentDeclaration == null
     }
+
+    // since this actually doesn't affect the generated .class file name?
+    // so, i don't have test for this rn. 
+    private fun stringWithDotKtRemoved(fileName: String) = fileName.dropLast(3)
 }
