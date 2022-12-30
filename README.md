@@ -19,3 +19,24 @@ to exclude a field annotate the field with `@GenerateRequest.Exclude`
 
 ## limitations
 - only data class supported right now
+
+## others
+new features for request generator. <br/>
+
+first generate to extension functions. on both. <br/>
+if the data object needs more info you need to provide that, pass in as function parameter. <br/>
+
+second retain other annotations. <br/>
+like @JvmRecord. <br/>
+
+third, support for more than just request. <br/>
+like i want response too. <br/>
+so request and well as response from model. <br/>
+the challenge here is having to distinguish different excludes. <br/>
+
+if you go with two. fine... <br/>
+i think only request response. it should be fine. why do anyone wants to generate more than these two classes. <br/>
+if so its misusing. <br/>
+
+that would be a challenge. but i think thats just wrong way to do thing. <br/>
+
